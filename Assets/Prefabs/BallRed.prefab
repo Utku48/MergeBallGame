@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: -5913048071548542411}
   - component: {fileID: 3040678490513970855}
   m_Layer: 0
-  m_Name: BlueBall
-  m_TagString: Untagged
+  m_Name: BallRed
+  m_TagString: ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.099857606, g: 0.20423709, b: 0.6415094, a: 1}
+  m_Color: {r: 0.8584906, g: 0.17337613, b: 0.052643314, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc38309992c68149b1e9838d820ed2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BallColorIndex: 0
 --- !u!114 &-5913048071548542411
 MonoBehaviour:
   m_ObjectHideFlags: 0
