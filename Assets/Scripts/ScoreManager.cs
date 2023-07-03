@@ -13,7 +13,7 @@ public class ScoreManager : MonoBehaviour
 
     public TextMeshProUGUI[] mergeTexts; // Text component'lerini tutan dizi
 
-    private int[] mergeCounts = { 0, 0, 0 }; // Renk sayıları
+    public static int[] mergeCounts = { 0, 0, 0 }; // Renk sayıları
 
     private string[] colors = { "Green", "Red", "Yellow" }; // Renk isimleri
 

@@ -8,6 +8,7 @@ public class ButtonController : MonoBehaviour
 
     public GameObject[] BallPrefab;
 
+
     private void Start()
     {
         GameObject greenObject = Instantiate(BallPrefab[0], transform.position, transform.rotation);
@@ -33,6 +34,7 @@ public class ButtonController : MonoBehaviour
 
         }
     }
+
     public void On_ClickR()
     {
         if (ScoreManager.score >= 30)
