@@ -47,55 +47,91 @@ public class BallController : MonoBehaviour
     {
         //magnitude, bir vektörün uzunluğunu temsil eder ve o vektörün başlangıç noktasından son noktasına kadar olan mesafeyi verir.
         var speed = lastVelocity.magnitude / 15; //speed burada nesnenin mevcut hareket hızını (hız vektörünün büyüklüğünü) tutar
-        var direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+        var direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal) * 1.2f;
 
-
+        rb.velocity = direction * Mathf.Max(speed, 2f);
 
         Color collisionColor = collision.gameObject.GetComponent<SpriteRenderer>().color;
 
-        rb.velocity = direction * Mathf.Max(speed, 2f);
+
 
         #region Temas
         if (collision.gameObject.CompareTag("Wall"))
         {
             ScoreManager.score += 2;
         }
-        #region GreenBallsCollision
-        if (collisionColor == gameObject.GetComponent<SpriteRenderer>().color)
+
+        int prefabCoun = buttonController.BallPrefab.Length;
+
+        for (int i = 0; i < prefabCoun; i++)
         {
-            Debug.Log("renkler aynı");
-            if (ScoreManager.mergeCounts[0] >= 25 && BallColorIndex == 0)
+            if (collisionColor == gameObject.GetComponent<SpriteRenderer>().color)
             {
-                Destroy(collision.gameObject);
-                Destroy(gameObject);
+                Debug.Log("renkler aynı");
 
-                GameObject ballInstant = buttonController.BallPrefab[1];
-                GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
-                newObject.GetComponent<BallController>().BallColorIndex = 1;
+                int mergeCountRequirement = (i + 1) * 2;
 
-            }
-            #endregion
+                if (ScoreManager.mergeCounts[i] >= mergeCountRequirement && BallColorIndex == i)
+                {
+                    Destroy(collision.gameObject);
+                    Destroy(gameObject);
 
-            #region RedBallsCollision
-            if (ScoreManager.mergeCounts[1] >= 50 && BallColorIndex == 1)
-            {
-                Destroy(collision.gameObject);
-                Destroy(gameObject);
+                    GameObject ballInstant = buttonController.BallPrefab[i + 1];
+                
+                    GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
 
-                GameObject ballInstant = buttonController.BallPrefab[2];
-                GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
-                newObject.GetComponent<BallController>().BallColorIndex = 2;
-
+                    newObject.GetComponent<BallController>().BallColorIndex = i + 1;
+                }
             }
         }
+
+        #region GreenBallsCollision
+        //    if (collisionColor == gameObject.GetComponent<SpriteRenderer>().color)
+        //    {
+        //        Debug.Log("renkler aynı");
+        //        if (ScoreManager.mergeCounts[0] >= 25 && BallColorIndex == 0)
+        //        {
+        //            Destroy(collision.gameObject);
+        //            Destroy(gameObject);
+
+        //            GameObject ballInstant = buttonController.BallPrefab[1];
+        //            GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
+        //            newObject.GetComponent<BallController>().BallColorIndex++;
+
+        //        }
+        //        #endregion
+
+        //        #region RedBallsCollision
+        //        if (ScoreManager.mergeCounts[1] >= 50 && BallColorIndex == 1)
+        //        {
+        //            Destroy(collision.gameObject);
+        //            Destroy(gameObject);
+
+        //            GameObject ballInstant = buttonController.BallPrefab[2];
+        //            GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
+        //            newObject.GetComponent<BallController>().BallColorIndex = 2;
+
+        //        }
+        //    }
+        //    #endregion
+        //    #region YellowBallsCollision
+        //    if (ScoreManager.mergeCounts[2] >= 75 && BallColorIndex == 2)
+        //    {
+        //        Destroy(collision.gameObject);
+        //        Destroy(gameObject);
+
+        //        GameObject ballInstant = buttonController.BallPrefab[2];
+        //        GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
+        //        newObject.GetComponent<BallController>().BallColorIndex = 3;
+        //    }
+        //}
+        //#endregion
+
+
         #endregion
 
-
+        #endregion
     }
-    #endregion
-
-
-
     private void OnTouch()
     {
 
