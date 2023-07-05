@@ -62,7 +62,7 @@ public class ButtonController : MonoBehaviour
     }
     public void On_ClickYB()
     {
-        OnButtonClick(5, 70);
+        OnButtonClick(5, 1);
     }
 
 
