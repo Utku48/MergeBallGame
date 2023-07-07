@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-        rb.AddForce(new Vector2(7.5f * 10f, 7.5f * 10f));  //rb.AddForce()=> Rigidbody bileşenine kuvvet uygulamak için kullanılır.
+        rb.AddForce(new Vector2(7.5f * 7.5f, 7.5f * 7.5f));  //rb.AddForce()=> Rigidbody bileşenine kuvvet uygulamak için kullanılır.
     }
 
 

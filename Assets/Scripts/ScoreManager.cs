@@ -17,7 +17,7 @@ public class ScoreManager : MonoBehaviour
 
     private string[] colors = { "Green", "Red", "Yellow", "RedYellow\n", "Watermelon\n", "BlackYellow\n" }; // Renk isimleri
 
-    private string[] maxMerge = { "/10", "/20", "/30", "/40", "/50", "60" };
+    private string[] maxMerge = { "/10", "/20", "/30", "/40", "/50", "/60" };
 
 
 

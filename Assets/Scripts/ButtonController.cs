@@ -26,15 +26,20 @@ public class ButtonController : MonoBehaviour
 
     public void OnButtonClick(int ballIndex, int requiredScore)
     {
-        if (ScoreManager.score >= requiredScore)
+        if (FindObjectsOfType<Ball>().Length <= 25)
         {
-            GameObject newObject = Instantiate(BallPrefab[ballIndex], transform.position, transform.rotation);
-            newObject.GetComponent<BallController>().BallColorIndex = ballIndex;
-            newObject.transform.localScale = BallPrefab[ballIndex].transform.localScale;
+            if (ScoreManager.score >= requiredScore)
+            {
+                GameObject newObject = Instantiate(BallPrefab[ballIndex], transform.position, transform.rotation);
+                newObject.GetComponent<BallController>().BallColorIndex = ballIndex;
+                newObject.transform.localScale = BallPrefab[ballIndex].transform.localScale;
 
-            ScoreManager.score -= requiredScore;
+                ScoreManager.score -= requiredScore;
+            }
         }
     }
+
+
 
     public void On_ClickG()
     {

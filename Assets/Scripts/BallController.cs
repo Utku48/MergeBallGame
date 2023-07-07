@@ -18,6 +18,11 @@ public class BallController : MonoBehaviour
 
     public ButtonController buttonController;
 
+    [SerializeField] Vector3 direction;
+
+
+
+
 
 
     void Awake()
@@ -30,6 +35,7 @@ public class BallController : MonoBehaviour
     {
         Color ballColor = spriteRender.color;
         buttonController = FindAnyObjectByType<ButtonController>();
+
     }
 
 
@@ -46,9 +52,16 @@ public class BallController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //magnitude, bir vektörün uzunluğunu temsil eder ve o vektörün başlangıç noktasından son noktasına kadar olan mesafeyi verir.
-        var speed = lastVelocity.magnitude / 15; //speed burada nesnenin mevcut hareket hızını (hız vektörünün büyüklüğünü) tutar
-        var direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal) * 1.2f;
+        var speed = lastVelocity.magnitude / 25; //speed burada nesnenin mevcut hareket hızını (hız vektörünün büyüklüğünü) tutar
 
+        direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal) * 1.01f;
+
+        if (direction.magnitude < 0.2f)
+        {
+            Vector2 tempVelocity = new Vector2(Random.Range(-0.2f, 0.2f), Random.Range(-0.2f, 0.2f));
+            direction = tempVelocity;
+
+        }
         rb.velocity = direction * Mathf.Max(speed, 2f);
 
         Color collisionColor = collision.gameObject.GetComponent<SpriteRenderer>().color;
@@ -56,10 +69,6 @@ public class BallController : MonoBehaviour
 
 
         #region Temas
-        if (collision.gameObject.CompareTag("Wall"))
-        {
-            ScoreManager.score += 2;
-        }
 
         int prefabCoun = buttonController.BallPrefab.Length;
 
@@ -73,14 +82,19 @@ public class BallController : MonoBehaviour
 
                 if (ScoreManager.mergeCounts[i] >= mergeCountRequirement && BallColorIndex == i)
                 {
-                    Destroy(collision.gameObject);
-                    Destroy(gameObject);
+                    Sayac.InstSayac++;
+                    if (Sayac.InstSayac == 2)
+                    {
+                        Destroy(collision.gameObject);
+                        Destroy(gameObject);
 
-                    GameObject ballInstant = buttonController.BallPrefab[i + 1];
-                
-                    GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
+                        GameObject ballInstant = buttonController.BallPrefab[i + 1];
+                        GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
 
-                    newObject.GetComponent<BallController>().BallColorIndex = i + 1;
+                        newObject.GetComponent<BallController>().BallColorIndex = i + 1;
+                        Sayac.InstSayac = 0;
+                    }
+
                 }
             }
         }
@@ -151,6 +165,7 @@ public class BallController : MonoBehaviour
 
                     if (this.gameObject.CompareTag("ball"))
                     {
+
                         Destroy(gameObject);
 
                         ScoreManager.ballColorIndexes[BallColorIndex] += 1;
