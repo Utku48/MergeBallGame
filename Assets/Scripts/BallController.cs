@@ -41,9 +41,23 @@ public class BallController : MonoBehaviour
 
     private void Update()
     {
-        lastVelocity = rb.velocity;
-        OnTouch();
 
+        OnTouch();
+        lastVelocity = rb.velocity;
+
+
+
+    }
+    private void FixedUpdate()
+    {
+
+        if (rb.velocity.magnitude <= 1.4f || rb.velocity == Vector2.zero)
+        {
+            Debug.Log("girdi");
+            Vector2 ForceVector = transform.right * 10f;
+            rb.AddForce(new Vector2(0, 1) * 5f, ForceMode2D.Force);
+
+        }
     }
 
 
@@ -51,20 +65,30 @@ public class BallController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
         //magnitude, bir vektörün uzunluğunu temsil eder ve o vektörün başlangıç noktasından son noktasına kadar olan mesafeyi verir.
         var speed = lastVelocity.magnitude / 25; //speed burada nesnenin mevcut hareket hızını (hız vektörünün büyüklüğünü) tutar
 
-        direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal) * 1.01f;
+
+        direction = Vector2.Reflect(lastVelocity.normalized, collision.contacts[0].normal) * 1.01f;
 
         if (direction.magnitude < 0.2f)
         {
-            Vector2 tempVelocity = new Vector2(Random.Range(-0.2f, 0.2f), Random.Range(-0.2f, 0.2f));
+            Vector2 tempVelocity = transform.position - collision.gameObject.transform.position;
             direction = tempVelocity;
 
         }
-        rb.velocity = direction * Mathf.Max(speed, 2f);
 
-        Color collisionColor = collision.gameObject.GetComponent<SpriteRenderer>().color;
+
+        rb.velocity = direction * Mathf.Max(1f, 2f);
+
+
+
+        if (!collision.transform.CompareTag("Wall"))
+        {
+            Color collisionColor = collision.gameObject.GetComponent<SpriteRenderer>().color;
+        }
+
 
 
 
@@ -72,32 +96,33 @@ public class BallController : MonoBehaviour
 
         int prefabCoun = buttonController.BallPrefab.Length;
 
-        for (int i = 0; i < prefabCoun; i++)
-        {
-            if (collisionColor == gameObject.GetComponent<SpriteRenderer>().color)
-            {
-                Debug.Log("renkler aynı");
+        //for (int i = 0; i < prefabCoun; i++)
+        //{
+        //    if (collisionColor == gameObject.GetComponent<SpriteRenderer>().color)
+        //    {
+        //        Debug.Log("renkler aynı");
 
-                int mergeCountRequirement = (i + 1) * 2;
+        //        int mergeCountRequirement = (i + 1) * 2;
 
-                if (ScoreManager.mergeCounts[i] >= mergeCountRequirement && BallColorIndex == i)
-                {
-                    Sayac.InstSayac++;
-                    if (Sayac.InstSayac == 2)
-                    {
-                        Destroy(collision.gameObject);
-                        Destroy(gameObject);
+        //        if (ScoreManager.mergeCounts[i] >= mergeCountRequirement && BallColorIndex == i)
+        //        {
+        //            Sayac.InstSayac++;
+        //            if (Sayac.InstSayac == 2)
+        //            {
+        //                Destroy(collision.gameObject);
+        //                Destroy(gameObject);
 
-                        GameObject ballInstant = buttonController.BallPrefab[i + 1];
-                        GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
+        //                GameObject ballInstant = buttonController.BallPrefab[i + 1];
+        //                GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
+        //                newObject.GetComponent<Rigidbody2D>().AddForce(transform.right * 1.2f, ForceMode2D.Impulse);
 
-                        newObject.GetComponent<BallController>().BallColorIndex = i + 1;
-                        Sayac.InstSayac = 0;
-                    }
+        //                newObject.GetComponent<BallController>().BallColorIndex = i + 1;
+        //                Sayac.InstSayac = 0;
+        //            }
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
 
         #region GreenBallsCollision
         //    if (collisionColor == gameObject.GetComponent<SpriteRenderer>().color)

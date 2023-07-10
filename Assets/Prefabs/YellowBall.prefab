@@ -123,6 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BallColorIndex: 0
   buttonController: {fileID: 0}
+  direction: {x: 0, y: 0, z: 0}
 --- !u!114 &6717663956273852395
 MonoBehaviour:
   m_ObjectHideFlags: 0
