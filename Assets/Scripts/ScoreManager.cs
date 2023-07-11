@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 public class ScoreManager : MonoBehaviour
 {
-    public static List<int> ballColorIndexes = new List<int>() { 0, 0, 0, 0, 0 };
+    public static List<int> ballColorIndexes = new List<int>() { 0, 0, 0, 0, 0, 0 };
 
 
     public TextMeshProUGUI text;

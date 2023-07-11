@@ -20,6 +20,7 @@ public class BallController : MonoBehaviour
 
     [SerializeField] Vector3 direction;
 
+    ParticuleSystem particuleSystem;
 
 
 
@@ -35,7 +36,7 @@ public class BallController : MonoBehaviour
     {
         Color ballColor = spriteRender.color;
         buttonController = FindAnyObjectByType<ButtonController>();
-
+        particuleSystem = FindAnyObjectByType<ParticuleSystem>();
     }
 
 
@@ -89,85 +90,37 @@ public class BallController : MonoBehaviour
             Color collisionColor = collision.gameObject.GetComponent<SpriteRenderer>().color;
         }
 
-
-
-
         #region Temas
 
         int prefabCoun = buttonController.BallPrefab.Length;
 
-        //for (int i = 0; i < prefabCoun; i++)
-        //{
-        //    if (collisionColor == gameObject.GetComponent<SpriteRenderer>().color)
-        //    {
-        //        Debug.Log("renkler aynı");
+        for (int i = 0; i < prefabCoun; i++)
+        {
+            if (collision.gameObject.GetComponent<SpriteRenderer>().color == gameObject.GetComponent<SpriteRenderer>().color)
+            {
+                Debug.Log("renkler aynı");
 
-        //        int mergeCountRequirement = (i + 1) * 2;
+                int mergeCountRequirement = (i + 1) * 10;
 
-        //        if (ScoreManager.mergeCounts[i] >= mergeCountRequirement && BallColorIndex == i)
-        //        {
-        //            Sayac.InstSayac++;
-        //            if (Sayac.InstSayac == 2)
-        //            {
-        //                Destroy(collision.gameObject);
-        //                Destroy(gameObject);
+                if (ScoreManager.mergeCounts[i] >= mergeCountRequirement && BallColorIndex == i)
+                {
+                    Sayac.InstSayac++;
+                    if (Sayac.InstSayac == 2)
+                    {
+                        Destroy(collision.gameObject);
+                        Destroy(gameObject);
 
-        //                GameObject ballInstant = buttonController.BallPrefab[i + 1];
-        //                GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
-        //                newObject.GetComponent<Rigidbody2D>().AddForce(transform.right * 1.2f, ForceMode2D.Impulse);
+                        GameObject ballInstant = buttonController.BallPrefab[i + 1];
+                        GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
+                        newObject.GetComponent<Rigidbody2D>().AddForce(transform.right * 1.2f, ForceMode2D.Impulse);
 
-        //                newObject.GetComponent<BallController>().BallColorIndex = i + 1;
-        //                Sayac.InstSayac = 0;
-        //            }
+                        newObject.GetComponent<BallController>().BallColorIndex = i + 1;
+                        Sayac.InstSayac = 0;
+                    }
 
-        //        }
-        //    }
-        //}
-
-        #region GreenBallsCollision
-        //    if (collisionColor == gameObject.GetComponent<SpriteRenderer>().color)
-        //    {
-        //        Debug.Log("renkler aynı");
-        //        if (ScoreManager.mergeCounts[0] >= 25 && BallColorIndex == 0)
-        //        {
-        //            Destroy(collision.gameObject);
-        //            Destroy(gameObject);
-
-        //            GameObject ballInstant = buttonController.BallPrefab[1];
-        //            GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
-        //            newObject.GetComponent<BallController>().BallColorIndex++;
-
-        //        }
-        //        #endregion
-
-        //        #region RedBallsCollision
-        //        if (ScoreManager.mergeCounts[1] >= 50 && BallColorIndex == 1)
-        //        {
-        //            Destroy(collision.gameObject);
-        //            Destroy(gameObject);
-
-        //            GameObject ballInstant = buttonController.BallPrefab[2];
-        //            GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
-        //            newObject.GetComponent<BallController>().BallColorIndex = 2;
-
-        //        }
-        //    }
-        //    #endregion
-        //    #region YellowBallsCollision
-        //    if (ScoreManager.mergeCounts[2] >= 75 && BallColorIndex == 2)
-        //    {
-        //        Destroy(collision.gameObject);
-        //        Destroy(gameObject);
-
-        //        GameObject ballInstant = buttonController.BallPrefab[2];
-        //        GameObject newObject = Instantiate(ballInstant, transform.position, Quaternion.identity);
-        //        newObject.GetComponent<BallController>().BallColorIndex = 3;
-        //    }
-        //}
-        //#endregion
-
-
-        #endregion
+                }
+            }
+        }
 
         #endregion
     }
@@ -191,9 +144,31 @@ public class BallController : MonoBehaviour
                     if (this.gameObject.CompareTag("ball"))
                     {
 
+                        ScoreManager.ballColorIndexes[BallColorIndex] += 1;
                         Destroy(gameObject);
 
-                        ScoreManager.ballColorIndexes[BallColorIndex] += 1;
+
+                        if (BallColorIndex == 0)
+                        {
+                            particuleSystem.effects[0].Play();
+                            particuleSystem.effects[0].transform.position = hit.collider.gameObject.transform.position;
+                        }
+                        if (BallColorIndex == 1 || BallColorIndex == 4)
+                        {
+                            particuleSystem.effects[1].Play();
+                            particuleSystem.effects[1].transform.position = hit.collider.gameObject.transform.position;
+                        }
+                        if (BallColorIndex == 2 || BallColorIndex == 3 || BallColorIndex == 5)
+                        {
+                            particuleSystem.effects[2].Play();
+                            particuleSystem.effects[2].transform.position = hit.collider.gameObject.transform.position;
+                        }
+
+                        //if (BallColorIndex >= 0 && BallColorIndex < particuleSystem.effects.Length)
+                        //{
+                        //    particuleSystem.effects[BallColorIndex].Play();
+                        //    particuleSystem.effects[BallColorIndex].transform.position = hit.collider.gameObject.transform.position;
+                        //}
 
                     }
 
