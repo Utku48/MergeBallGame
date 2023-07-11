@@ -22,7 +22,7 @@ public class BallController : MonoBehaviour
 
     ParticuleSystem particuleSystem;
 
-
+    public static bool click = false;
 
 
 
@@ -143,7 +143,7 @@ public class BallController : MonoBehaviour
 
                     if (this.gameObject.CompareTag("ball"))
                     {
-
+                        click = true;
                         ScoreManager.ballColorIndexes[BallColorIndex] += 1;
                         Destroy(gameObject);
 
@@ -163,6 +163,8 @@ public class BallController : MonoBehaviour
                             particuleSystem.effects[2].Play();
                             particuleSystem.effects[2].transform.position = hit.collider.gameObject.transform.position;
                         }
+
+                        click = false;
 
                         //if (BallColorIndex >= 0 && BallColorIndex < particuleSystem.effects.Length)
                         //{
