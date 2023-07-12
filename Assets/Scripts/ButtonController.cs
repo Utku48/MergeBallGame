@@ -21,6 +21,7 @@ public class ButtonController : MonoBehaviour
     }
     private void Update()
     {
+
     }
 
 
@@ -44,6 +45,7 @@ public class ButtonController : MonoBehaviour
     public void On_ClickG()
     {
         OnButtonClick(0, 10); //Topun Index'i 0'sa ve para 10'dan büyük ise Yeşil top butonuna basıldığında yeşil topu Instantiate et 
+       
     }
 
     public void On_ClickR()
